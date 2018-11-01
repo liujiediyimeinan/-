@@ -121,7 +121,7 @@ mydf$thhm = (mydf$hm|mydf$tha)
 
 myarch = mydf
 myboth = mydf[mydf$time<"2018-10-03 00:00:00 UTC",]
-myytin = myboth[myboth$res=="Youtube",]
+myytin = myboth#[myboth$res=="Youtube",]
 #mytcin = myboth[myboth$res=="Tencent",]
 
 #save.image(file = "my2df.RData")
@@ -131,9 +131,9 @@ myytin = myboth[myboth$res=="Youtube",]
 pdf_cast_yt = data.frame(x=c('杨紫','邓伦','罗云熙','周海媚','萨顶顶','陈钰琪','王一菲'),
                       y=c(yj(myytin,"yz"),yj(myytin,"dl"),yj(myytin,"yx"),yj(myytin,"hm"),yj(myytin,"dd"),yj(myytin,"yq"),yj(myytin,"zh")),
                       z=c(ts(myytin,"yz"),ts(myytin,"dl"),ts(myytin,"yx"),ts(myytin,"hm"),ts(myytin,"dd"),ts(myytin,"yq"),ts(myytin,"zh")))
-pdf_cast_tc = data.frame(x=c('杨紫','邓伦','罗云熙','周海媚','萨顶顶','陈钰琪','王一菲'),
-                      y=c(yj(mytcin,"yz"),yj(mytcin,"dl"),yj(mytcin,"yx"),yj(mytcin,"hm"),yj(mytcin,"dd"),yj(mytcin,"yq"),yj(mytcin,"zh")),
-                      z=c(ts(mytcin,"yz"),ts(mytcin,"dl"),ts(mytcin,"yx"),ts(mytcin,"hm"),ts(mytcin,"dd"),ts(mytcin,"yq"),ts(mytcin,"zh")))
+# pdf_cast_tc = data.frame(x=c('杨紫','邓伦','罗云熙','周海媚','萨顶顶','陈钰琪','王一菲'),
+#                       y=c(yj(mytcin,"yz"),yj(mytcin,"dl"),yj(mytcin,"yx"),yj(mytcin,"hm"),yj(mytcin,"dd"),yj(mytcin,"yq"),yj(mytcin,"zh")),
+#                       z=c(ts(mytcin,"yz"),ts(mytcin,"dl"),ts(mytcin,"yx"),ts(mytcin,"hm"),ts(mytcin,"dd"),ts(mytcin,"yq"),ts(mytcin,"zh")))
 
 p1=ggplot(data=pdf_cast_yt) + geom_col(aes(x=x,y=y),alpha=.5,fill="azure3") + geom_col(aes(x=x,y=z),fill="azure3") +
   scale_x_discrete(limits=pdf_cast_yt$x) + geom_text(aes(label=z,x=x,y=z),vjust=1.4) +
@@ -185,6 +185,7 @@ p3=ggplot(pdf_charaext_yt) + geom_col(aes(x=x,y=y),alpha=.5,fill="azure3") + geo
   geom_text(aes(label=y,x=x,y=y),vjust=-.4) + xlab('角色昵称·油管篇') + 
   ylab('言及次数')+theme_classic() +theme(text = element_text(family = 'Yuppy SC'))
 
+p3
 # p4=ggplot(pdf_charaext_tc) + geom_col(aes(x=x,y=y),alpha=.5,fill="azure3") + geom_col(aes(x=x,y=z),fill="azure3") +
 #   scale_x_discrete(limits=c('锦觅','旭凤','润玉','鎏英','天后','天帝','穗禾','月下仙人','噗嗤君','缘机')) + 
 #   geom_text(aes(label=z,x=x,y=z),vjust=1.4) +
@@ -266,14 +267,14 @@ p11 = ggplot(data=pdf_zh_yt%>%filter(ep!=1&type!="f2"),aes(x=ep,y=nep,color=type
 # grid.arrange(p12,p11,nrow=1,widths=c(1,1.2))
 
 # pdf_comp_tc = pdf_zh_tc%>%group_by(variable)%>%summarise(all=sum(value))
-pdf_comp_yt = pdf_zh_yt%>%group_by(variable)%>%summarise(all=sum(value))
-p13=ggplot(pdf_comp_yt) + geom_col(aes(x=variable,y=all,fill=variable)) +
-  scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + scale_fill_discrete(guide=F)+
-  geom_text(aes(label=all,x=variable,y=all),vjust=-.6) +
-  scale_y_continuous(limits = c(0,85000),expand = c(0,0))+
-  xlab('全剧演员角色综合讨论度·油管篇') + 
-  ylab('综合讨论度:评论言及+0.3*点赞数+0.7*回复数')+theme_classic() +theme(text = element_text(family = 'Yuppy SC'))
-p13
+# pdf_comp_yt = pdf_zh_yt%>%group_by(nep)%>%summarise(all=sum(value))
+# p13=ggplot(pdf_comp_yt) + geom_col(aes(x=neo,y=all,fill=variable)) +
+#   scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + scale_fill_discrete(guide=F)+
+#   geom_text(aes(label=all,x=nep,y=all),vjust=-.6) +
+#   scale_y_continuous(limits = c(0,85000),expand = c(0,0))+
+#   xlab('全剧演员角色综合讨论度·油管篇') + 
+#   ylab('综合讨论度:评论言及+0.3*点赞数+0.7*回复数')+theme_classic() +theme(text = element_text(family = 'Yuppy SC'))
+# p13
 # p14=ggplot(pdf_comp_tc) + geom_col(aes(x=variable,y=all,fill=variable)) +
 #   scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + 
 #   geom_text(aes(label=all,x=variable,y=all),vjust=-.6) +
@@ -325,14 +326,14 @@ p11 = ggplot(data=pdf_zh_yt%>%filter(type!="f2"),aes(x=ep,y=carate,color=type)) 
 # grid.arrange(p12,p11,nrow=1,widths=c(1,1.2))
 
 # pdf_comp_tc = pdf_zh_tc%>%group_by(variable)%>%summarise(all=sum(value))
-pdf_comp_yt = pdf_zh_yt%>%group_by(variable)%>%summarise(all=sum(value))
-p13=ggplot(pdf_comp_yt) + geom_col(aes(x=variable,y=all,fill=variable)) +
-  scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + scale_fill_discrete(guide=F)+
-  geom_text(aes(label=all,x=variable,y=all),vjust=-.6) +
-  scale_y_continuous(limits = c(0,85000),expand = c(0,0))+
-  xlab('全剧演员角色综合讨论度·油管篇') + 
-  ylab('综合讨论度:评论言及+0.3*点赞数+0.7*回复数')+theme_classic() +theme(text = element_text(family = 'Yuppy SC'))
-p13
+# pdf_comp_yt = pdf_zh_yt%>%group_by(variable)%>%summarise(all=sum(value))
+# p13=ggplot(pdf_comp_yt) + geom_col(aes(x=variable,y=all,fill=variable)) +
+#   scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + scale_fill_discrete(guide=F)+
+#   geom_text(aes(label=all,x=variable,y=all),vjust=-.6) +
+#   scale_y_continuous(limits = c(0,85000),expand = c(0,0))+
+#   xlab('全剧演员角色综合讨论度·油管篇') + 
+#   ylab('综合讨论度:评论言及+0.3*点赞数+0.7*回复数')+theme_classic() +theme(text = element_text(family = 'Yuppy SC'))
+# p13
 # p14=ggplot(pdf_comp_tc) + geom_col(aes(x=variable,y=all,fill=variable)) +
 #   scale_x_discrete(labels=c('锦觅','旭凤','润玉','荼姚')) + 
 #   geom_text(aes(label=all,x=variable,y=all),vjust=-.6) +
@@ -381,7 +382,7 @@ p15 = ggplot(pdf_cp_yt[order(pdf_cp_yt$tag),])+geom_col(aes(x=type,y=inf,fill=fa
   #geom_text(aes(label=y,x=x,y=y),vjust=-.4) + 
   xlab('演员全名言及·油管篇') + 
   ylab('言及数')  +theme_classic() +theme(text = element_text(family = 'Yuppy SC'));p15
-myhj=rep(0.5,12);myhj[4]=-1;myhj[7]=-1;myvj=rep(.4,12);myvj[4]=-.3;myvj[7]=.6
+# myhj=rep(0.5,12);myhj[4]=-1;myhj[7]=-1;myvj=rep(.4,12);myvj[4]=-.3;myvj[7]=.6
 # p16 = ggplot(pdf_cp_tc[order(pdf_cp_yt$tag),])+geom_col(aes(x=type,y=inf,fill=factor(tag,levels=c(100,10,1,11,101,110,111))))+
 #   scale_x_discrete(limits=c("jm","xf","ry"),labels=c("杨紫","邓伦","罗云熙")) + 
 #   scale_fill_manual(guide=F,values=brewer.pal(7,"Set3")[c(4,7,1,6,3,2,5)])+
@@ -424,15 +425,14 @@ pdf_cp_text_yt = pdf_cp_yt%>%group_by(type)%>%summarize(all=sum(inf))
 p15 = ggplot(pdf_cp_yt[order(pdf_cp_yt$tag),])+
   geom_col(aes(x=type,y=inf,fill=factor(tag,levels=c(100,10,1,11,101,110,111))))+
   scale_x_discrete(limits=c("jm","xf","ry"),labels=c("杨紫","邓伦","罗云熙")) + 
-  coord_cartesian(clip="off",ylim = c(0,12000))+
+  #coord_cartesian(clip="off",ylim = c(0,12000))+
   scale_fill_manual(name="言及成分",
                     labels=c("女一单人","男一单人","男二单人","男一男二","女一男二","女一男一","三人"),
                     values=brewer.pal(7,"Set3")[c(4,7,1,6,3,2,5)])+
   geom_text(aes(label=paste(round(infpro,2)*100,"%",sep=""),x=type,y=z),vjust=.4) +
   geom_text(data=pdf_cp_text_yt,aes(label=all,x=type,y=all),vjust=-.2) +
-  #geom_text(aes(label=y,x=x,y=y),vjust=-.4) + 
   xlab('演员昵称言及·油管篇') + 
-  ylab('综合讨论度:评论言及+0.3*点赞数+0.7*回复数')  +theme_classic() +theme(text = element_text(family = 'Yuppy SC'));p15
+  ylab('评论言及数')  +theme_classic() +theme(text = element_text(family = 'Yuppy SC'));p15
 myhj=rep(0.5,12);myhj[4]=-.7;myhj[7]=-1;
 myvj=rep(.4,12);myvj[4]=-.3;myvj[7]=.6
 # p16 = ggplot(pdf_cp_tc[order(pdf_cp_yt$tag),])+geom_col(aes(x=type,y=inf,fill=factor(tag,levels=c(100,10,1,11,101,110,111))))+
@@ -452,7 +452,7 @@ myvj=rep(.4,12);myvj[4]=-.3;myvj[7]=.6
 #CAST BY TIME:
 ###############
 pdf_tm = melt(data.frame(myytin[,c('time','yz','dl','yx')]),id="time")
-pdf_tm_yt = pdf_tm[pdf_yt$value==TRUE,]
+pdf_tm_yt = pdf_tm[pdf_tm$value==TRUE,]
 
 p19=ggplot(pdf_tm_yt)+geom_histogram(aes(x=as.Date(time),fill=variable),binwidth = 7,position='dodge',alpha=1)+
   scale_fill_discrete(label=c('杨紫','邓伦','罗云熙'),name="演员姓名言及") + 
@@ -461,6 +461,7 @@ p19=ggplot(pdf_tm_yt)+geom_histogram(aes(x=as.Date(time),fill=variable),binwidth
   scale_x_date(date_breaks = "1 weeks",date_labels = "%b月%d日") + theme_classic() +
   theme(text = element_text(family = 'Yuppy SC'),axis.line.y = element_blank(),
         axis.text.x = element_text(angle = 30, hjust = 1))
+p19
 # p20=ggplot(pdf_tm_tc)+geom_histogram(aes(x=as.Date(time),fill=variable),binwidth = 7,position='dodge',alpha=1)+
 #   #scale_fill_discrete(label=c('杨紫','邓伦','罗云熙'),name="演员姓名言及") + 
 #   scale_fill_discrete(guide=F) + #scale_y_continuous(limits=c(0,6000),expand = c(0,0))+
@@ -471,12 +472,6 @@ p19=ggplot(pdf_tm_yt)+geom_histogram(aes(x=as.Date(time),fill=variable),binwidth
 # grid.arrange(p20,p19,nrow=1,widths=c(1,1.2))
 # min(as.Date(mydf$time))
 
-p20=ggplot(pdf_tm)+geom_density(aes(x=as.Date(time),fill=variable,color=variable),alpha=0.3)+
-  scale_fill_discrete(label=c('杨紫','邓伦','罗云熙'),name="演员姓名言及") + 
-  scale_color_discrete(guide=F) +
-  xlab('日期') + ylab('频率密度') + 
-  scale_x_date(date_breaks = "1 weeks",date_labels = "%b月%d日") + theme_classic() +
-  theme(text = element_text(family = 'Yuppy SC'),axis.line.y = element_blank())
 
 #CAST BY TIME:
 pdf_tm = melt(data.frame(mydf[,c('time','f1','m1','m2')]),id="time")
@@ -640,6 +635,6 @@ ggplot(pdf_prod)+geom_bar(aes(x=variable,fill=factor(id, levels=c("pos","neu","n
   ylab('情感占比')  +theme_classic() +
   theme(text = element_text(family = 'Yuppy SC'))
 
-####################
-# BY MELONOFTIANYA #
-####################
+#############################
+#  BY 天涯论坛 @六界第一美男瓜  #
+#############################
